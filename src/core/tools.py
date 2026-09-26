@@ -75,7 +75,9 @@ def adb_required(func):
 @tool
 def run_command(command: str) -> str:
     """Run a shell command on the local Linux machine."""
-    return subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
+    return subprocess.check_output(
+        command, shell=True, stderr=subprocess.STDOUT, text=True
+    )
 
 
 @tool
@@ -92,20 +94,6 @@ def open_google_chrome(url: str | None, new_window: bool = False) -> str:
     except Exception as e:
         logger.error(f"[open_google_chrome] Error: {e}")
         return f"Error opening Google Chrome: {e}"
-
-
-@tool
-def open_whatsapp_web() -> str:
-    """
-    Open WhatsApp Web
-    """
-    logger.info("[open_whatsapp_web] Opening WhatsApp Web...")
-    try:
-        subprocess.Popen(["gtk-launch", "chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Default.desktop"])
-        return "WhatsApp Web launched."
-    except Exception as e:
-        logger.error(f"[open_whatsapp_web] Error: {e}")
-        return f"Error: {e}"
 
 
 @tool
@@ -196,12 +184,15 @@ def mirror_mobile(
     if source == "screen":
         subprocess.Popen("scrcpy", shell=True)
         return "Starting mobile screen mirroring using scrcpy."
-    if source == "camera":
+    elif source == "camera":
         if not camera_facing or camera_facing not in ["front", "back"]:
             camera_facing = "back"
-        subprocess.Popen(["scrcpy", "--video-source=camera", f"--camera-facing={camera_facing}"])
+        subprocess.Popen(
+            ["scrcpy", "--video-source=camera", f"--camera-facing={camera_facing}"]
+        )
         return f"Starting mobile camera {camera_facing} mirroring using scrcpy."
-    return "Invalid source. Use 'screen' or 'camera'."
+    else:
+        return "Invalid source. Use 'screen' or 'camera'."
 
 
 @tool
@@ -211,7 +202,9 @@ def get_location() -> str:
     Get the current location from the connected mobile device using ADB.
     """
     device = adb.device()
-    return device.shell(r"dumpsys location | grep 'Location\[' | head -n 1 | grep -oE '[0-9]+\.[0-9]+,[0-9]+\.[0-9]+'")
+    return device.shell(
+        r"dumpsys location | grep 'Location\[' | head -n 1 | grep -oE '[0-9]+\.[0-9]+,[0-9]+\.[0-9]+'"
+    )
 
 
 def get_all_tools() -> list[StructuredTool]:
