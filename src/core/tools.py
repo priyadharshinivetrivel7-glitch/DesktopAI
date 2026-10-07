@@ -184,7 +184,7 @@ def mirror_mobile(
     if source == "screen":
         subprocess.Popen("scrcpy", shell=True)
         return "Starting mobile screen mirroring using scrcpy."
-    elif source == "camera":
+    if source == "camera":
         if not camera_facing or camera_facing not in ["front", "back"]:
             camera_facing = "back"
         subprocess.Popen(
