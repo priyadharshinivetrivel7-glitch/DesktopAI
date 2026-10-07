@@ -191,8 +191,7 @@ def mirror_mobile(
             ["scrcpy", "--video-source=camera", f"--camera-facing={camera_facing}"]
         )
         return f"Starting mobile camera {camera_facing} mirroring using scrcpy."
-    else:
-        return "Invalid source. Use 'screen' or 'camera'."
+    return "Invalid source. Use 'screen' or 'camera'."
 
 
 @tool
