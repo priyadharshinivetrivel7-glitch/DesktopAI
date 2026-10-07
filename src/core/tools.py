@@ -75,9 +75,7 @@ def adb_required(func):
 @tool
 def run_command(command: str) -> str:
     """Run a shell command on the local Linux machine."""
-    return subprocess.check_output(
-        command, shell=True, stderr=subprocess.STDOUT, text=True
-    )
+    return subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
 
 
 @tool
@@ -187,9 +185,7 @@ def mirror_mobile(
     if source == "camera":
         if not camera_facing or camera_facing not in ["front", "back"]:
             camera_facing = "back"
-        subprocess.Popen(
-            ["scrcpy", "--video-source=camera", f"--camera-facing={camera_facing}"]
-        )
+        subprocess.Popen(["scrcpy", "--video-source=camera", f"--camera-facing={camera_facing}"])
         return f"Starting mobile camera {camera_facing} mirroring using scrcpy."
     return "Invalid source. Use 'screen' or 'camera'."
 
@@ -201,9 +197,7 @@ def get_location() -> str:
     Get the current location from the connected mobile device using ADB.
     """
     device = adb.device()
-    return device.shell(
-        r"dumpsys location | grep 'Location\[' | head -n 1 | grep -oE '[0-9]+\.[0-9]+,[0-9]+\.[0-9]+'"
-    )
+    return device.shell(r"dumpsys location | grep 'Location\[' | head -n 1 | grep -oE '[0-9]+\.[0-9]+,[0-9]+\.[0-9]+'")
 
 
 def get_all_tools() -> list[StructuredTool]:
